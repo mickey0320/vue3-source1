@@ -8,5 +8,16 @@
   </head>
   <body>
     <script src="./reactivity.global.js"></script>
+    <script>
+      const { reactive, effect } = VueReactivity;
+      const obj = reactive({ name: "yanjian", age: 25 });
+      effect(() => {
+        document.write(`name:${obj.name},age:${obj.age}`);
+      });
+
+      setTimeout(() => {
+        obj.age = 26;
+      }, 2000);
+    </script>
   </body>
 </html>

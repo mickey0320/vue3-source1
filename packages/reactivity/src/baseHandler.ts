@@ -1,5 +1,6 @@
-import { activeEffect } from "./effect";
-import { ReactiveFlags, track, trigger } from "./reactive";
+import { isObject } from "@vue/shared";
+import { track, trigger } from "./effect";
+import { reactive, ReactiveFlags } from "./reactive";
 
 const baseHandler = {
   get(target, key, receiver) {
@@ -7,7 +8,11 @@ const baseHandler = {
       return target;
     }
     track(target, key);
-    return Reflect.get(target, key, receiver);
+    const result = Reflect.get(target, key, receiver);
+    if (isObject(result)) {
+      return reactive(result);
+    }
+    return result;
   },
   set(target, key, value, receiver) {
     const oldValue = target[key];
